@@ -20,10 +20,6 @@ The infrastructure is organized by **cloud → environment → stack**:
 <pre>
 databricks-terraform/
 ├── modules/
-│   ├── databricks/
-│   │   ├── workspace/
-│   │   ├── compute/
-│   │   └── unity_catalog/
 │   ├── aws/
 │   │   ├── network/
 │   │   ├── storage/
