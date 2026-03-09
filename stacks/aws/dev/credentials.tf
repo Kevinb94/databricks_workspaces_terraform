@@ -1,4 +1,12 @@
 # stacks/dev/credentials.tf
+resource "time_sleep" "wait_for_iam" {
+  depends_on = [
+    aws_iam_role.databricks_cross_account,
+    aws_iam_role_policy.databricks_cross_account
+  ]
+
+  create_duration = "20s"
+}
 
 ############################################
 # 1) Trust policy Databricks wants on the role
@@ -37,10 +45,8 @@ resource "aws_iam_role_policy" "databricks_cross_account" {
 resource "databricks_mws_credentials" "dev" {
   provider         = databricks.mws
   credentials_name = "dbx-${var.env}-credentials"
+  role_arn         = aws_iam_role.databricks_cross_account.arn
 
-  # REQUIRED: top-level attribute (no nested role block)
-  role_arn = aws_iam_role.databricks_cross_account.arn
-
-  depends_on = [aws_iam_role_policy.databricks_cross_account]
+  depends_on = [time_sleep.wait_for_iam]
 }
 # role_arn is required here per the official resource docs/guide. :contentReference[oaicite:2]{index=2}

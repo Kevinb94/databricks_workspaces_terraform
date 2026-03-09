@@ -1,5 +1,5 @@
 module "network" {
-  source = "../../modules/shared_vpc_two_az"
+  source = "../../../modules/aws/shared_vpc_two_az"
 
   name     = "dbx-shared"
   vpc_cidr = "10.10.0.0/16"
